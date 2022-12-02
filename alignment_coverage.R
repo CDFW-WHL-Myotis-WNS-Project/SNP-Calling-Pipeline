@@ -158,9 +158,9 @@ ggplot(mc_hi, aes(x = center_cum, y = mean_depth, color = as.factor(scaff))) +
   geom_point(alpha = 0.2, size = 0.5, shape = 16) +
   #geom_vline(xintercept = axis_set$end, linetype = "dashed", linewidth = 0.1) +
   geom_hline(yintercept = 46.1, linetype = "dashed") +
-  scale_x_continuous(label = axis_set$scaff, breaks = axis_set$center, expand = c(0.005,0.005)) +
+  scale_x_continuous(label = axis_set$scaff, breaks = axis_set$center, expand = c(0.0025,0.0025)) +
   scale_y_log10(expand = c(0.01,0.01)) +
-  scale_color_manual(values = rep(c("#69BACF", "#4B8A9A"), unique(length(axis_set$scaff)))) +
+  scale_color_manual(values = rep(c("#CF6974", "#9A4B5D"), unique(length(axis_set$scaff)))) +
   xlab("Scaffold") +
   ylab("Mean depth") +
   labs(title = "Mean depth of coverage by 50kb windows", 
@@ -173,7 +173,7 @@ ggplot(mc_low, aes(x = center_cum, y = mean_depth, color = as.factor(scaff))) +
   geom_point(alpha = 0.1, size = 0.5, shape = 16) +
   #geom_vline(xintercept = axis_set$end, linetype = "dashed", linewidth = 0.1) +
   geom_hline(yintercept = 22.1, linetype = "dashed") +
-  scale_x_continuous(label = axis_set$scaff, breaks = axis_set$center, expand = c(0.005,0.005)) +
+  scale_x_continuous(label = axis_set$scaff, breaks = axis_set$center, expand = c(0.0025,0.0025)) +
   scale_y_log10(expand = c(0.01,0.01)) +
   scale_color_manual(values = rep(c("#69BACF", "#4B8A9A"), unique(length(axis_set$scaff)))) +
   xlab("Scaffold") +
@@ -182,5 +182,5 @@ ggplot(mc_low, aes(x = center_cum, y = mean_depth, color = as.factor(scaff))) +
        subtitle = "LowCov samples; overall mean = 22.1 (dashed line)") +
   theme(legend.position = "none", panel.background = element_blank(), 
         axis.ticks.x = element_blank(), axis.text.x = element_text(size = 8),
-        axis.line.y = element_line(color = "#545454", size = 0.5)))
+        axis.line.y = element_line(color = "#545454", size = 0.5))
 
