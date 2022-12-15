@@ -34,3 +34,4 @@ hts_Stats -L $3/${sample}/${sample}.json -N 'initial stats' \
 end=`date +%s`
 runtime=$((end-start)) 
 echo "RUNTIME: $runtime"
+ 
