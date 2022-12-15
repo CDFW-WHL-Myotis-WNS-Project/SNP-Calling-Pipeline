@@ -11,15 +11,12 @@
 #SBATCH --error=/share/cdfwwildlife/MYLU_NovaSeq/SCRIPTS/slurmout/01_htstream_%A_%a.err
 
 echo "Cleaning raw sequences..."
-
 start=`date +%s`
 echo $HOSTNAME
 echo "My SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
-
 sample=`sed "${SLURM_ARRAY_TASK_ID}q;d" $1`
 [[ -d $3 ]] || mkdir -p $3
 [[ -d $3/${sample} ]] || mkdir -p $3/${sample}
-
 echo "SAMPLE: ${sample}"
 
 module load htstream
