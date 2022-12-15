@@ -29,6 +29,6 @@ end=`date +%s`
 runtime=$((end-start))
 echo "RUNTIME: $runtime"
 
-## NOTES:
+## NOTES: 
 # samtools -@ -- allocate additional threads
 # samtools -m -- only output alignments with given number of CIGAR bases consuming query sequence >= X
