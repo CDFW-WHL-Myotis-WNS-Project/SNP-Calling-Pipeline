@@ -1,36 +1,28 @@
 #!/bin/bash
 
-#SBATCH --nodes=1
 #SBATCH --job-name=samtools_merge
-#SBATCH --ntasks=8
-#SBATCH --mem=5000
-#SBATCH --array=1-52
-#SBATCH --output=/share/cdfwwildlife/MYLU_NovaSeq/SCRIPTS/slurmout/03_merge_LowCov_%A_%a.out
-#SBATCH --error=/share/cdfwwildlife/MYLU_NovaSeq/SCRIPTS/slurmout/03_merge_LowCov_%A_%a.err
+#SBATCH --nodes=1
+#SBATCH --mem=10MB
+#SBATCH --array=1-51  # set to number of samples
+#SBATCH --output=/share/cdfwwildlife/MYLU_NovaSeq/SCRIPTS/slurmout/03_merge_%A_%a.out
+#SBATCH --error=/share/cdfwwildlife/MYLU_NovaSeq/SCRIPTS/slurmout/03_merge_%A_%a.err
 
-dir="/share/cdfwwildlife/MYLU_NovaSeq"
+echo "Merging sample reads across lanes..."
 
-echo "Merging sample sequences across lanes..."
 start=`date +%s`
 echo $HOSTNAME
 echo "My SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
 
-sample=`sed "${SLURM_ARRAY_TASK_ID}q;d" ${dir}/Sample_Lists/LowCov_samples.merge.txt`
+sample=`sed "${SLURM_ARRAY_TASK_ID}q;d" $1`
 echo "SAMPLE: ${sample}"
-
-inpath="${dir}/02_AlignBWA/LowCov"
-outpath="${dir}/03_Merge"
-
-echo "OUTPUT DIR: ${outpath}"
-[[ -d ${outpath} ]] || mkdir -p ${outpath}
-[[ -d ${outpath}/${sample} ]] || mkdir -p ${outpath}/${sample}
+[[ -d $2/${sample} ]] || mkdir -p $2/${sample}
 
 module load samtools
+cd $2
+lanes=$(ls -d */* | grep ${sample})
 
-samtools merge -o ${outpath}/${sample}/${sample}.sorted.bam\
-	${inpath}/${sample}_L001/${sample}*.sorted.bam\
-	${inpath}/${sample}_L002/${sample}*.sorted.bam\
-	${inpath}/${sample}_L003/${sample}*.sorted.bam
+samtools merge -o $2/${sample}/${sample}.merge.sorted.bam $lanes
+rm -r $2/${sample}$3*  # delete non-merged bam files
 
 end=`date +%s`
 runtime=$((end-start))
