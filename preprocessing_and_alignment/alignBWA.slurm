@@ -9,14 +9,11 @@
 #SBATCH --error=/share/cdfwwildlife/MYLU_NovaSeq/SCRIPTS/slurmout/02_bwa_%A_%a.err
 
 echo "Aligning to Mlc HiC genome with bwa mem..."
-
 start=`date +%s`
 echo $HOSTNAME
 echo "My SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
-
 sample=`sed "${SLURM_ARRAY_TASK_ID}q;d" $1`
 [[ -d $3/${sample} ]] || mkdir -p $3/${sample}
-
 echo "SAMPLE: ${sample}"
 
 module load bwa
