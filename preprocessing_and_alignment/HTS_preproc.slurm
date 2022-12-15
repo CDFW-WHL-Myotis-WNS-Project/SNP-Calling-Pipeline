@@ -30,7 +30,7 @@ hts_Stats -L $3/${sample}/${sample}.json -N 'initial stats' \
     hts_QWindowTrim -A $3/${sample}/${sample}.json -N 'quality trim the ends of reads' | \
     hts_NTrimmer -A $3/${sample}/${sample}.json -N 'remove any remaining N characters' | \
     hts_Stats -A $3/${sample}/${sample}.json -N 'final stats' -f $3/${sample}/${sample}_preproc
-
+ 
 end=`date +%s`
 runtime=$((end-start))
 echo "RUNTIME: $runtime"
