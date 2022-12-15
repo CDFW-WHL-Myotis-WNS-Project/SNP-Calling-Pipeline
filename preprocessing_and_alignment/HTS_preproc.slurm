@@ -32,5 +32,5 @@ hts_Stats -L $3/${sample}/${sample}.json -N 'initial stats' \
     hts_Stats -A $3/${sample}/${sample}.json -N 'final stats' -f $3/${sample}/${sample}_preproc
  
 end=`date +%s`
-runtime=$((end-start))
+runtime=$((end-start)) 
 echo "RUNTIME: $runtime"
