@@ -1,1 +1,2 @@
-# Eastern-Myotis-Populations
+# SNP-Calling Pipeline
+## utilizing DRAGEN-GATK best practices
