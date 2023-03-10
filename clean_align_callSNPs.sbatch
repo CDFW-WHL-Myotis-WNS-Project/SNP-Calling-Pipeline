@@ -50,26 +50,26 @@
 #################
 # SET VARIABLES #
 #################
-dir="/share/cdfwwildlife/MYLU_NovaSeq"  # path to root directory for all input and output files
-std="${dir}/SCRIPTS/slurmout"  # desired path for standard output and error files for each job (will be created)
+dir=""  # path to root directory for all input and output files
+std=""  # desired path for standard output and error files for each job (will be created)
 
-dirconda="/share/cdfwwildlife/Capel_Dedicated/miniconda/etc/profile.d"  # path to directory containing conda.sh
-envconda="dragmap"  # conda environment containing DRAGMAP & picard (& fastq-filter?)
-gatkjar="/software/gatk/4.3.0.0/static/gatk-4.3.0.0/gatk-package-4.3.0.0-local.jar"  # path and name of gatk jar file
+dirconda=""  # path to directory containing conda.sh
+envconda=""  # name of conda environment containing DRAGMAP & picard (& fastq-filter?)
+gatkjar=""  # path and name of gatk jar file
 
-ref="${dir}/REF/HiC_Genome/Myoluc_HiC.fa"  # path to reference genome
+ref="${dir}/"  # path to reference genome
 include=""  # OPTIONAL bed file with intervals to detect SNPs within; for whole genome leave blank
 exclude=""  # OPTIONAL path to masking bed file for SNP calling
 
-raw="${dir}/00_Raw"  # directory containing raw reads
-samples="${dir}/Sample_Lists/all_samples.txt"  # path to file containing fastq sample prefixes (including individual lane designations if applicable)
-samples_merged="${dir}/Sample_Lists/all_samples.merge.txt"  # path to file containing merged sample prefixes (i.e. excluding lane designations); if samples sequenced on single lane set to same file path as ${samples} 
-lib="${dir}/Sample_Lists/library.txt"  # OPTIONAL group designations (one line per sample) for sample group subdirectory organization; leave blank if not applicable/desired
-rg="${dir}/Sample_Lists/RG_info.tsv"  # read group information file
+raw="${dir}/"  # directory containing raw reads
+samples="${dir}/"  # path to file containing fastq sample prefixes (including individual lane designations if applicable)
+samples_merged="${dir}/"  # path to file containing merged sample prefixes (i.e. excluding lane designations); if samples sequenced on single lane set to same file path as ${samples} 
+lib="${dir}/"  # OPTIONAL group designations (one line per sample) for sample group subdirectory organization; leave blank if not applicable/desired
+rg="${dir}/"  # read group information file
 
 # IF READS NEED TO BE MERGED ACROSS LANES ##
-merge="T"  # set to any string if fastqs need to be merged across multiple lanes, if not leave empty
-lane="_L00"  # shared lane designation prefix (e.g. "_L00" for sample_prefix_L001, sample_prefix_L002, etc.)
+merge=""  # set to any string if fastqs need to be merged across multiple lanes, if not leave empty
+lane=""  # shared lane designation prefix (e.g. "_L00" for sample_prefix_L001, sample_prefix_L002, etc.)
 
 ## NOTE: time limits and/or memory allocation may need to be adjusted depending on fastq size
 
