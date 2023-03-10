@@ -14,7 +14,7 @@ This pipeline performs whole-genome SNP calling of paired-end whole genome reseq
 - [bedtools](https://github.com/arq5x/bedtools2)
 - [bcftools](https://github.com/samtools/bcftools)
 
-NOTE: scripts use conda to load DRAGMAP & picard; all tools are available via bioconda
+NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, and bcftools are all called using `module load` but can be incorporated into the conda environment specified
 
 ## Required Input Files:
 - raw unmapped FASTQ files
@@ -29,4 +29,4 @@ NOTE: scripts use conda to load DRAGMAP & picard; all tools are available via bi
 - OPTIONAL: bed specifying genomic interval(s) to include OR bed file specifying genomic interval(s) to exclude/mask
 
 ## Instructions:
-Download all 
+Download all 11 scripts into a single directory. Open `clean_align_callSNPs.sbatch` in a text editor and set all required variables in the designated section (starting on line 53). Execute the pipeline by running `sbatch clean_align_callSNPs.sbatch`.
