@@ -3,11 +3,11 @@ This pipeline performs whole-genome SNP calling of whole genome resequencing dat
 
 
 ## Dependencies:
-[HTStream](https://s4hts.github.io/HTStream/#hts_QWindowTrim)
-[DRAGMAP v1.2.1](https://github.com/Illumina/DRAGMAP)
-[picard](https://github.com/broadinstitute/picard)
-[GATK4](https://github.com/broadinstitute/gatk)
-[samtools](https://github.com/samtools/samtools)
-[bedtools](https://github.com/arq5x/bedtools2)
-[bcftools](https://github.com/samtools/bcftools)
+- [HTStream](https://s4hts.github.io/HTStream/#hts_QWindowTrim)
+- [DRAGMAP v1.2.1](https://github.com/Illumina/DRAGMAP)
+- [picard](https://github.com/broadinstitute/picard)
+- [GATK4](https://github.com/broadinstitute/gatk)
+- [samtools](https://github.com/samtools/samtools)
+- [bedtools](https://github.com/arq5x/bedtools2)
+- [bcftools](https://github.com/samtools/bcftools)
 NOTE: conda used to load DRAGMAP & picard
