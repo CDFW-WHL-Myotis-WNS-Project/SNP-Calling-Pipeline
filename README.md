@@ -11,4 +11,4 @@ This pipeline performs whole-genome SNP calling of whole genome resequencing dat
 - [bedtools](https://github.com/arq5x/bedtools2)
 - [bcftools](https://github.com/samtools/bcftools)
 
-NOTE: conda used to load DRAGMAP & picard
+NOTE: scripts use conda to load DRAGMAP & picard; all tools are available via bioconda
