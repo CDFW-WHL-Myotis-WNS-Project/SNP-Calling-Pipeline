@@ -10,4 +10,4 @@ This pipeline performs whole-genome SNP calling of whole genome resequencing dat
 - [samtools](https://github.com/samtools/samtools)
 - [bedtools](https://github.com/arq5x/bedtools2)
 - [bcftools](https://github.com/samtools/bcftools)
-NOTE: conda used to load DRAGMAP & picard
+  NOTE: conda used to load DRAGMAP & picard
