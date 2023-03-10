@@ -1,2 +1,2 @@
 # SNP-Calling Pipeline
-## utilizing DRAGEN-GATK best practices
+## incorporate DRAGEN-GATK best practices
