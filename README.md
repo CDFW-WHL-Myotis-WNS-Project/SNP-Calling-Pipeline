@@ -30,3 +30,25 @@ NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, 
 
 ## Instructions:
 Download all 11 scripts into a single directory. Open `clean_align_callSNPs.sbatch` in a text editor and set all required variables in the designated section (starting on line 53). Execute the pipeline by running `sbatch clean_align_callSNPs.sbatch`.
+
+## Pipeline components:
+### 1. HTS_preproc.slurm
+Use HTStream to clean raw paired FASTQ files by screening Illumina PhiX library sequences, trimming adapers, quality trimming read ends, removing 'N's, and filtering reads smaller than 100bp.
+### 2. hashDRAGMAP.slurm
+Build the reference genome hash table for DRAGMAP.
+### 3. alignDRAGMAP.slurm
+Use DRAGMAP to align cleaned reads, use picard to replace read group information, and use GATK MarkDuplicates to mark and remove PCR duplicate reads.
+### 4. samtools_merge.slurm
+If samples were sequenced across multiple lanes, use samtools to merge bams by sample. 
+### 5. genome_wins.slurm
+Use bedtools to create a bed file of the reference genome broken into 50Kb windows with 10% overlap.
+### 6. align_stats.slurm
+Use samtools, bedtools, and GATK CollectAlignmentSummaryMetrics to alculate alignment statistics for each sample including mean depth of coverage per sample (whole genome, per scaffold, and per 50Kb window), # and % reads aligned, read and insert length mean and distribution, etc.
+### 7. STRtable.slurm
+Use GATK ComposeSTRTableFile to create a short tandem repeat (STR) location table of the reference genome used for DragSTR model auto-calibration.
+### 8. bam_to_gvcf.sbatch
+Use GATK to calibrate the DragSTR model (CalibrateDragstrModel), call individual variants (HaplotypeCaller), and compress individual GVCFs (ReblockGVCF).
+### 9. gvcf_to_vcf_scaff.sbatch
+Use GATK to import single-sample GVCFs into per-scaffold databases (GenomicsDBImport) and joint call variants (GenotypeGVCFs).
+### 10. vcf_scaff_to_snp.vcf.slurm
+Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants) and quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration). 
