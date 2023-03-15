@@ -2,7 +2,7 @@
 This pipeline performs whole-genome SNP calling of paired-end whole genome resequencing data following the [DRAGEN-GATK best practices protocol](https://gatk.broadinstitute.org/hc/en-us/articles/4407897446939) with the exception of extra preprocessing utilizing HTStream. Preprocessing laregely follows the [recommendations of the UC Davis Bioinformatics Core](https://ucdavis-bioinformatics-training.github.io/2020-mRNA_Seq_Workshop/data_reduction/01-preproc_htstream_mm) with the addition of filtering reads with short (< 100bp) insert lengths, necessary for avoiding segmenation fault errors in DRAGMAP v1.2.1. This pipeline works with samples sequenced on a single lane or samples sequenced across multiple lanes. Restriction of SNP-calling to specific genomic intervals as well as masking of unwanted regions is also possible by specifying whitelist or blacklist files. This pipeline was developed on an HPC cluster utilizing [SLURM](https://slurm.schedmd.com/quickstart.html).
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/49217218/225173126-c5fe9e7b-7b9a-4e17-8845-34b24842baba.png" width=75% height=75%>
+<img src="https://user-images.githubusercontent.com/49217218/225173126-c5fe9e7b-7b9a-4e17-8845-34b24842baba.png" width=80% height=80%>
 </p>
 
 ## Dependencies:
