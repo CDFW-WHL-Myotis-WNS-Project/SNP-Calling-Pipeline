@@ -51,4 +51,4 @@ Use GATK to calibrate the DragSTR model (CalibrateDragstrModel), call individual
 ### 9. gvcf_to_vcf_scaff.sbatch
 Use GATK to import single-sample GVCFs into per-scaffold databases (GenomicsDBImport) and joint call variants (GenotypeGVCFs).
 ### 10. vcf_scaff_to_snp.vcf.slurm
-Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants) and quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration). 
+Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants), quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration), and create a table of quality metrics for all SNPs (VariantsToTable). 
