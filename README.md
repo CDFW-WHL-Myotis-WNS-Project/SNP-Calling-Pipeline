@@ -19,17 +19,24 @@ NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, 
 ## Required Input Files:
 - raw unmapped FASTQ files
 - reference genome FASTA
-- sample list(s): file containing sample prefixes (one per line); if individuals were sequenced across multiple lanes create two separate prefix lists - one with and one without lane designations
+- sample list(s): file containing sample prefixes (one per line)
+    - **LISTS MUST BE SORTED USING** `sort` to ensure samples are properly labled in final VCFs
+    - if individuals were sequenced across multiple lanes, create two separate prefix lists - one with and one without lane designations
+        | Unmerged | Merged |
+        |:----------:|:--------:|
+        | <pre>sample1_L001<br>sample1_L002<br>sample2_L001<br>sample2_L002<br>sample3_L001<br>sample3_L002<br></pre> | <pre>sample1<br>sample2<br>sample3<br><br><br><br></pre> |
 - read group information file: tab delimited file containing the following read group information for each pair of FASTQ files (one per line) in the following order - ID SM LB PL PU
     - ID = sample read group ID (e.g. sample prefix including lane designation; identical to SM if sequenced on a single lane)
     - SM = sample name (excluding lane designation)
     - LB = DNA library identifyier (only imporatant if multiple libraries were sequenced)
-    - PU = platform uint coded as {flowcell_barcode}.{lane_number}.{sample_name}; flowcell barcodes can be found at the begining of most fastq headers formated as @<instrument>:<run number>:<flowcell ID>
+    - PU = platform uint; this can indicate if samples were ran on different lanes and/or different sequencing units
 - OPTIONAL: text file of subdirectory designations for each sample (one line per sample); e.g. sample library, population, etc.
-- OPTIONAL: bed specifying genomic interval(s) to include OR bed file specifying genomic interval(s) to exclude/mask
+- OPTIONAL: bed file specifying genomic interval(s) to include OR bed file specifying genomic interval(s) to exclude/mask
 
 ## Instructions:
-Download all 11 scripts into a single directory. Open `clean_align_callSNPs.sbatch` in a text editor and set all required variables in the designated section (starting on line 53). Execute the pipeline by running `sbatch clean_align_callSNPs.sbatch`.
+1. Download all 11 scripts into a single directory
+2. Open `clean_align_callSNPs.sbatch` in a text editor and set all required variables in the designated section (starting on line 49)
+3. Execute the pipeline by running `sbatch clean_align_callSNPs.sbatch`
 
 ## Pipeline components:
 ### 1. HTS_preproc.slurm
@@ -51,4 +58,4 @@ Use GATK to calibrate the DragSTR model (CalibrateDragstrModel), call individual
 ### 9. gvcf_to_vcf_scaff.sbatch
 Use GATK to import single-sample GVCFs into per-scaffold databases (GenomicsDBImport) and joint call variants (GenotypeGVCFs).
 ### 10. vcf_scaff_to_snp.vcf.slurm
-Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants), quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration), and create a table of quality metrics for all SNPs (VariantsToTable). 
+Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants), quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration), and create a table of quality metrics for all SNPs (VariantsToTable). Minimum allele frequency filters are automatically applied to SNP filtering and internally calculated as $`5/(total * 2)`$ to ensure at least 3 individuals possess a given allele ([Rochette & Catchen 2017](http://dx.doi.org/10.1038/nprot.2017.123)).
