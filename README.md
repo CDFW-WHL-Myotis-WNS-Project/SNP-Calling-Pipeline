@@ -78,16 +78,22 @@ NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, 
 >>sampleID1
 >>
 >>sampleID2
+>>
+>>...
 
 >02_AlignDRAGMAP
 >>sampleID
 >>
 >>sampleID2
+>>
+>>...
 
 >03_AlignStats
 >>sampleID
 >>
 >>sampleID2
+>>
+>>...
 
 >04_GATKvcfs
 >>dragstr_model
