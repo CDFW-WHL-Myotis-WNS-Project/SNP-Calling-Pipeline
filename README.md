@@ -32,11 +32,13 @@ NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, 
 
 ## Instructions:
 1. Download all 12 scripts into a single directory
-2. Open `clean_align_callSNPs.sbatch` in a text editor and set all required variables in the designated section (starting on line 49)
+2. Open `clean_align_callSNPs.sbatch` in a text editor and set **ALL** required variables in the designated section (starting on line 50)
 3. Execute the pipeline by running `sbatch clean_align_callSNPs.sbatch`
 
 ## Final outputs:
-### Success report for each set of jobs executed -- **${std}/JOB_REPORT_*jobID*.out**
+### Job information outputs (found in ${std})
+- Success report for all jobs executed -- **JOB_REPORT_*jobID*.out**
+- Standard output and error for each job -- ***job_name*_*jobID*.out** & ***job_name*_*jobID*.err**
 ### DRAGMAP alignment statistics for each sample (found in ${dir}/03_AlignStats/*sampleID*)
 - Summary of alignment flags -- ***sampleID*.dragmap_flagstats.txt** (via `samtools flagstat`)
 - Comprehensive alignment stats -- ***sampleID*.dragmap_stats.txt** (via `samtools stats`; can be plotted with `plot-bamstats`)
@@ -45,18 +47,58 @@ NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, 
 - Per-scaffold summary alignment stats -- ***sampleID*.dragmap_coverage.tsv** (via `samtools coverage`)
 - GATK alignment summary stats -- ***sampleID*.dragmap.gatk.stat.txt** (via `gatk CollectAlignmentSummaryMetrics`)
 - Mean depth of coverage by 50 kb windows with 10% overlap -- ***sampleID*.dragmap_50kbwin_meancov.tsv** (via `bedtools coverage`)
-### VCFs
+### VCFs (found in ${dir}/04_GATKvcfs)
 - Unfiltered -- **gatk.all_indivs.vcf.gz**
 - Insertions and deletions (filtered from final) -- **gatk.indel.vcf.gz**
 - Multialleleic SNPs (filtered from final) -- **gatk.snp.multiallelic.vcf.gz**
 - If mitogenome scaffold is specified (filtered from final) -- **gatk.mtDNA.vcf.gz**
 - Soft filtered final set of SNPs with iterative filteres listed -- **gatk.snp.soft_filtered.vcf.gz**
 - Hard filtered final set of SNPs -- **gatk.snp.hard_filtered.vcf.gz**
-### VCF statistics
+### VCF statistics (found in ${dir}/04_GATKvcfs)
 - Per-scaffold distribution of SNP filters -- **gatk.snp.filtered.FILTER_DIST**
 - Whole-genome summary stat (via `bcftools stats`) -- **gatk.snp.filtered.stats**
 - Per-sample summary stats pulled from `bcftools stats` -- **gatk.snp.filtered.per-indiv.stats**
 - If a masking bed file was provided -- **gatk.snp.filtered+masked.stats** & **gatk.snp.filtered+masked.per-indiv.stats**
+
+## Output file structure (within specified root directory)
+>slurmout
+>>01_htstream
+>>
+>>02_DRAGMAP
+>>
+>>03_merge
+>>
+>>04_stats
+>>
+>>05_hapcall
+>>
+>>06_genotype
+
+>01_HTS_PreProc
+>>sampleID1
+>>
+>>sampleID2
+
+>02_AlignDRAGMAP
+>>sampleID
+>>
+>>sampleID2
+
+>03_AlignStats
+>>sampleID
+>>
+>>sampleID2
+
+>04_GATKvcfs
+>>dragstr_model
+>>
+>>genomicDB
+>>
+>>indiv_scaff_gvcfs
+>>
+>>scaff_vcfs
+
+>temp
 
 ## Pipeline components:
 ### 1. HTS_preproc.slurm
