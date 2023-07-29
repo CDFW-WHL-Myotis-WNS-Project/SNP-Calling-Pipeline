@@ -57,6 +57,7 @@ NOTE: scripts use conda to load DRAGMAP & picard; HTStream, samtools, bedtools, 
 - Whole-genome summary stat (via `bcftools stats`) -- **gatk.snp.filtered.stats**
 - Per-sample summary stats pulled from `bcftools stats` -- **gatk.snp.filtered.per-indiv.stats**
 - If a masking bed file was provided -- **gatk.snp.filtered+masked.stats** & **gatk.snp.filtered+masked.per-indiv.stats**
+
 ## Pipeline components:
 ### 1. HTS_preproc.slurm
 Use HTStream to clean raw paired FASTQ files by screening Illumina PhiX library sequences, trimming adapers, quality trimming read ends, removing 'N's, and filtering reads smaller than 100bp.
@@ -77,4 +78,4 @@ Use GATK to calibrate the DragSTR model (CalibrateDragstrModel), call individual
 ### 9. gvcf_to_vcf_scaff.sbatch
 Use GATK to import single-sample GVCFs into per-scaffold databases (GenomicsDBImport) and joint call variants (GenotypeGVCFs).
 ### 10. vcf_scaff_to_snp.vcf.slurm
-Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants), quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration), and create a table of quality metrics for all SNPs (VariantsToTable). Minimum allele frequency filters are automatically applied to SNP filtering and internally calculated as $`5/(total * 2)`$ to ensure at least 3 individuals possess a given allele ([Rochette & Catchen 2017](http://dx.doi.org/10.1038/nprot.2017.123)).
+Use bcftools to combine per-scaffold VCFs then use GATK to remove indels (SelectVariants), quality filter SNPs using the DRAGENHardQUAL filter (VariantFiltration), and create a table of quality metrics for all SNPs (VariantsToTable). Minimum allele frequency filters are applied to SNP filtering and internally calculated as $`5/(total * 2)`$ to ensure at least 3 individuals possess a given allele ([Rochette & Catchen 2017](http://dx.doi.org/10.1038/nprot.2017.123)). Other filters include removal of INDELs, mutialleleic SNPs, invariable sites, mtDNA sequences (if specified; placed in their own VCF), per-individual SNP read depth < 10 and > 200, QUAL value < 10.4139, per-SNP missingness > 20%, and masked regions if file is specified. These filters can all be adjusted by editing this script.
