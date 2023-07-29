@@ -4,19 +4,22 @@
 #SBATCH --nodes=1
 
 scaff=`sed "${SLURM_ARRAY_TASK_ID}q;d" $1/scaffolds.txt`
-ls -d $2/*rb.g.vcf.gz | sed -E 's/(.+\/)(.+)\.rb.g.vcf.gz/\2\t\1\2.rb.g.vcf.gz/' > $1/samples.gvcf.txt
 
 start=`date +%s`
 echo $HOSTNAME
 echo "SLURM_ARRAY_TASK_ID: $SLURM_ARRAY_TASK_ID"
 echo ${scaff}
 
+module load bcftools
+
+ls -d $2/indiv_scaff_gvcfs/*${scaff}.rb.g.vcf.gz | sed -E 's/(.+\/)(.+)\.rb.g.vcf.gz/\2\t\1\2.rb.g.vcf.gz/' > $1/samples_${scaff}.gvcf.txt
+
 # GenomicsDBImport
 echo "Importing single-sample gvcfs into database..."
-java -jar -Xmx4G $3 GenomicsDBImport \
+$3/gatk GenomicsDBImport \
      --genomicsdb-workspace-path $2/genomicDB/${scaff}.gvcf.db \
      --intervals $1/${scaff}.bed \
-     --sample-name-map $1/samples.gvcf.txt \
+     --sample-name-map $1/samples_${scaff}.gvcf.txt \
      --use-jdk-deflater \
      --use-jdk-inflater \
      --tmp-dir $1 \
@@ -24,12 +27,13 @@ java -jar -Xmx4G $3 GenomicsDBImport \
 
 # GenotypeGVCFs
 echo "Joint genotyping all individuals..."
-java -jar -Xmx4G $3 GenotypeGVCFs \
+$3/gatk GenotypeGVCFs \
      --reference $4 \
      --variant gendb://$2/genomicDB/${scaff}.gvcf.db \
-     --output $2/${scaff}.gatk.vcf.gz \
+     --output $2/scaff_vcfs/${scaff}.gatk.vcf.gz \
      --tmp-dir $1
-rm $2/*.rb.g.vcf.g*
+zcat $2/scaff_vcfs/${scaff}.gatk.vcf.gz | grep -m 1 "#CHR" | cut -f 10- | tr "\t" "\n" | sed -E "s/\_$scaff//" > $1/${scaff}.vcf.rehead
+bcftools reheader -s $1/${scaff}.vcf.rehead $2/scaff_vcfs/${scaff}.gatk.vcf.gz > $2/scaff_vcfs/${scaff}.temp && mv $2/scaff_vcfs/${scaff}.temp $2/scaff_vcfs/${scaff}.gatk.vcf.gz
 
 (exit) && echo success
 end=`date +%s`

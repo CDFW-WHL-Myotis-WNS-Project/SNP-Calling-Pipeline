@@ -6,15 +6,18 @@
 start=`date +%s`
 echo $HOSTNAME
 
-source $1/conda.sh
-conda activate $2
-ref=$3
+dc=$(cat $1 | awk '{print $1}')
+ec=$(cat $1 | awk '{print $2}')
+
+source ${dc}/conda.sh
+conda activate ${ec}
+ref=$2
 refdir=$(echo ${ref%/*})
 
 echo "Creating hash tables for DRAGMAP..."
 dragen-os \
     --build-hash-table true \
-    --ht-reference $3 \
+    --ht-reference $2 \
     --output-directory $refdir \
     --ht-num-threads 32
 

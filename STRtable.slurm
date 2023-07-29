@@ -6,28 +6,31 @@
 ref=$1
 refdir=$(echo ${ref%/*})
 refpre=$(echo ${ref%.*})
+dc=$(cat $2 | awk '{print $1}')
+ec=$(cat $2 | awk '{print $2}')
 
 start=`date +%s`
 echo $HOSTNAME
 
-source $2/conda.sh
-conda activate $3
+aklog
+source ${dc}/conda.sh
+conda activate ${ec}
+
+echo "Indexing genome (picard)..."
+picard CreateSequenceDictionary -R $1 -O $refpre.dict
 
 echo "Composing STR table..."
 if [ $4 ]
 then
-    java -jar -Xmx4G  $5 ComposeSTRTableFile \
+    $3/gatk ComposeSTRTableFile \
 	 -R $1 \
 	 -O $refdir/str_table.tsv \
 	 -L $4
 else
-    java -jar -Xmx4G  $5 ComposeSTRTableFile \
+    $3/gatk --java-options '-DGATK_STACKTRACE_ON_USER_EXCEPTION=true' ComposeSTRTableFile \
 	 -R $1 \
 	 -O $refdir/str_table.tsv
 fi
-
-echo "Indexing genome (picard)..."
-picard CreateSequenceDictionary -R $1 -O $refpre.dict
 
 (exit) && echo success
 end=`date +%s`
