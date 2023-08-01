@@ -12,7 +12,7 @@ echo ${scaff}
 
 module load bcftools
 
-ls -d $2/indiv_scaff_gvcfs/*${scaff}.rb.g.vcf.gz | sed -E 's/(.+\/)(.+)\.rb.g.vcf.gz/\2\t\1\2.rb.g.vcf.gz/' > $1/samples_${scaff}.gvcf.txt
+ls -d $2/indiv_scaff_gvcfs/*${scaff}.rb.g.vcf.gz | sed -E "s/(.+\/)(.+)\_${scaff}\.rb.g.vcf.gz/\2\t\1\2\_${scaff}.rb.g.vcf.gz/" > $1/samples_${scaff}.gvcf.txt
 
 # GenomicsDBImport
 echo "Importing single-sample gvcfs into database..."
@@ -33,7 +33,6 @@ $3/gatk GenotypeGVCFs \
      --output $2/scaff_vcfs/${scaff}.gatk.vcf.gz \
      --tmp-dir $1
 zcat $2/scaff_vcfs/${scaff}.gatk.vcf.gz | grep -m 1 "#CHR" | cut -f 10- | tr "\t" "\n" | sed -E "s/\_$scaff//" > $1/${scaff}.vcf.rehead
-bcftools reheader -s $1/${scaff}.vcf.rehead $2/scaff_vcfs/${scaff}.gatk.vcf.gz > $2/scaff_vcfs/${scaff}.temp && mv $2/scaff_vcfs/${scaff}.temp $2/scaff_vcfs/${scaff}.gatk.vcf.gz
 
 (exit) && echo success
 end=`date +%s`
