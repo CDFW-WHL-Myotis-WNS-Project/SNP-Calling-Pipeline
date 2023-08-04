@@ -53,10 +53,10 @@ if [ $7 ]
 then
     echo "  masked regions - (5)MASK"
     echo "filtering..."
-    bcftools view -m2 -M2 -v snps $1/gatk.snp.vcf.gz | bcftools filter -m $4 -O z | bcftools filter -S . -e 'FORMAT/DP<10 | FORMAT/DP>200' -O z |  bcftools filter -s "(1)DRAGENHardQUAL" -e '%QUAL<10.4139' -O z | bcftools filter -m + -s "(2)MISSING0.2" -e 'F_MISSING > 0.2' -O z | bcftools filter -m + -s "(3)INVARIABLE" -e 'AC==0 || AC==AN' -O z | bcftools filter -m + -s "(4)MINMAF0.02" -e "AF<${minmaf} || AF>${minmafi}" -O z | bcftools filter -m + -s "(5)MASK" --mask-file $6 -O z -o $1/gatk.snp.soft_filtered.vcf.gz
+    bcftools view -m2 -M2 -v snps $1/gatk.snp.vcf.gz | bcftools filter -m $4 -O z | bcftools filter -S . -e 'FORMAT/DP<10 | FORMAT/DP>200' -O z |  bcftools filter -s "(1)DRAGENHardQUAL" -e '%QUAL<10.4139' -O z | bcftools filter -m + -s "(2)MISSING0.2" -e 'F_MISSING > 0.2' -O z | bcftools filter -m + -s "(3)INVARIABLE" -e 'AC==0 || AC==AN' -O z | bcftools filter -m + -s "(4)MINMAF${minmaf}" -e "AF<${minmaf} || AF>${minmafi}" -O z | bcftools filter -m + -s "(5)MASK" --mask-file $6 -O z -o $1/gatk.snp.soft_filtered.vcf.gz
 else
     echo "filtering..."
-    bcftools view -m2 -M2 -v snps $1/gatk.snp.vcf.gz | bcftools filter -m $4 -O z | bcftools filter -S . -e 'FORMAT/DP<10 | FORMAT/DP>200' -O z | bcftools filter -s "(1)DRAGENHardQUAL" -e '%QUAL<10.4139' -O z | bcftools filter -m + -s "(2)MISSING0.2" -e 'F_MISSING > 0.2' -O z | bcftools filter -m + -s "(3)INVARIABLE" -e 'AC==0 || AC==AN' -O z | bcftools filter -m + -s "(4)MINMAF0.02" -e "AF<${minmaf} || AF>${minmafi}" -O z -o $1/gatk.snp.soft_filtered.vcf.gz
+    bcftools view -m2 -M2 -v snps $1/gatk.snp.vcf.gz | bcftools filter -m $4 -O z | bcftools filter -S . -e 'FORMAT/DP<10 | FORMAT/DP>200' -O z | bcftools filter -s "(1)DRAGENHardQUAL" -e '%QUAL<10.4139' -O z | bcftools filter -m + -s "(2)MISSING0.2" -e 'F_MISSING > 0.2' -O z | bcftools filter -m + -s "(3)INVARIABLE" -e 'AC==0 || AC==AN' -O z | bcftools filter -m + -s "(4)MINMAF${minmaf}" -e "AF<${minmaf} || AF>${minmafi}" -O z -o $1/gatk.snp.soft_filtered.vcf.gz
 fi
 
 echo "Creating hard filtered vcf..."
