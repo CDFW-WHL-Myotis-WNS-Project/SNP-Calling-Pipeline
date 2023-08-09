@@ -10,6 +10,8 @@ module load bcftools
 minmaf=$(echo $5 | awk '{print 5/(2*$0)}')
 minmafi=$(echo $5 | awk '{print 1-5/(2*$0)}')
 
+mv $1/scaff_vcfs/$4.gatk.vcf.gz $1/gatk.mtDNA.vcf.gz
+
 echo "Concatenating vcfs..."
 bcftools concat -o $1/gatk.all_indivs.vcf.gz -O z $1/scaff_vcfs/*.gatk.vcf.gz &&
 
@@ -34,9 +36,6 @@ echo "Selecting INDELs..."
     -V $1/gatk.all_indivs.vcf.gz \
     -select-type INDEL \
     -O $1/gatk.indel.vcf.gz
-
-echo "Creating mtDNA-specific VCF..."
-bcftools filter -r $4 -O z -o $1/gatk.mtDNA.vcf.gz $1/gatk.all_indivs.vcf.gz
 
 echo "Creating vcf with multialleleic SNPs..."
 bcftools view -m3 -v snps -O z -o $1/gatk.snp.multiallelic.vcf.gz $1/gatk.snp.vcf.gz
