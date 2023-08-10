@@ -26,8 +26,6 @@ source ${dc}/conda.sh
 conda activate ${ec}
 export TMPDIR=$4
 
-if [[ ! -f $2/${ind}/${sample}.sorted.bam ]]
-   then
 echo "Aligning reads..."
 dragen-os -v \
     -r $refdir \
@@ -36,12 +34,10 @@ dragen-os -v \
     --num-threads 32 | \
     samtools view -bh - | \
     samtools sort -@ 2 -O bam -o $2/${ind}/${sample}.sorted.bam
-fi
 
 echo "Replacing read groups..."
 picard AddOrReplaceReadGroups -I $2/${ind}/${sample}.sorted.bam -O $2/${ind}/${sample}.sorted.rg.bam -PL Illumina -LB ${lib} -SM ${sm} -PU ${pu} &&
 rm $2/${ind}/${sample}.sorted.bam &&
-
 
 echo "Marking duplicates..."        
 $7/gatk MarkDuplicates \
@@ -49,6 +45,7 @@ $7/gatk MarkDuplicates \
      -O $2/${ind}/${sample}.sorted.rg.md.bam \
      -M $2/${ind}/${sample}.sorted.rg.md.metric.txt &&
 rm $2/${ind}/${sample}.sorted.rg.bam
+samtools index 2/${ind}/${sample}.sorted.rg.md.bam
 
 if [ $9 == "T" ]
 then
