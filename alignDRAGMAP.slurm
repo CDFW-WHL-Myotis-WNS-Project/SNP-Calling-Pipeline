@@ -45,7 +45,6 @@ $7/gatk MarkDuplicates \
      -O $2/${ind}/${sample}.sorted.rg.md.bam \
      -M $2/${ind}/${sample}.sorted.rg.md.metric.txt &&
 rm $2/${ind}/${sample}.sorted.rg.bam
-samtools index $2/${ind}/${sample}.sorted.rg.md.bam
 
 if [ $9 == "T" ]
 then
