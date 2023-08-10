@@ -18,6 +18,9 @@ echo "SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
 echo "${sample}"
 echo "${lib}"
 
+module load samtools
+samtools index $4/${lib}/${samp}/*rg.md.bam
+
 echo "Calibrating DRAGEN STR model for haplotype calling..."
 $3/gatk CalibrateDragstrModel \
      -R $2 \
