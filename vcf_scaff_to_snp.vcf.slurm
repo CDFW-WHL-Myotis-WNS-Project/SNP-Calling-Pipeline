@@ -78,11 +78,9 @@ bcftools stats -v -d 5,100,5 -S $3 $1/gatk.snp.hard_filtered.vcf.gz > $1/gatk.sn
 
 if [ $7 ]
 then
-   echo -e "Sample\tnRefHom\tnNonRefHom\tnHets\tmean_depth\tnMissing\tnSites" > $1/gatk.snp.filtered+masked.per-indiv.stats
-cat $1/gatk.snp.filtered+masked.stats | grep ^PSC | cut -f 3-6,10,14 | awk '{print $0"\t"$2+$3+$4+$6}' >> $1/gatk.snp.filtered+masked.per-indiv.stats
+   cat $1/gatk.snp.filtered+masked.stats | grep PSC > $1/gatk.snp.filtered+masked.per-indiv.stats
 fi
-echo -e "Sample\tnRefHom\tnNonRefHom\tnHets\tmean_depth\tnMissing\tnSites" > $1/gatk.snp.filtered.per-indiv.stats
-cat $1/gatk.snp.filtered.stats | grep ^PSC | cut -f 3-6,10,14 | awk '{print $0"\t"$2+$3+$4+$6}' >> $1/gatk.snp.filtered.per-indiv.stats
+cat $1/gatk.snp.filtered.stats | grep PSC > $1/gatk.snp.filtered.per-indiv.stats
 
 if [ $7 ]
 then
